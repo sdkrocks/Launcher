@@ -45,6 +45,7 @@ public class ConfigurationDialog extends JDialog {
     private final JPasswordField proxyPasswordText = new JPasswordField();
     private final FormPanel advancedPanel = new FormPanel();
     private final JTextField gameKeyText = new JTextField();
+	private final JTextField offlineUsernameField = new JTextField();
     private final LinedBoxPanel buttonsPanel = new LinedBoxPanel(true);
     private final JButton okButton = new JButton(SharedLocale.tr("button.ok"));
     private final JButton cancelButton = new JButton(SharedLocale.tr("button.cancel"));
@@ -77,6 +78,7 @@ public class ConfigurationDialog extends JDialog {
         mapper.map(permGenSpinner, "permGen");
         mapper.map(widthSpinner, "windowWidth");
         mapper.map(heightSpinner, "widowHeight");
+		mapper.map(offlineUsernameField, "offlineUsernameConfig");
         mapper.map(useProxyCheck, "proxyEnabled");
         mapper.map(proxyHostText, "proxyHost");
         mapper.map(proxyPortText, "proxyPort");
@@ -100,6 +102,7 @@ public class ConfigurationDialog extends JDialog {
 
         gameSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.windowWidth")), widthSpinner);
         gameSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.windowHeight")), heightSpinner);
+		gameSettingsPanel.addRow(new JLabel(SharedLocale.tr("options.nonpremiumUsername")), offlineUsernameField);
         SwingHelper.removeOpaqueness(gameSettingsPanel);
         tabbedPane.addTab(SharedLocale.tr("options.minecraftTab"), SwingHelper.alignTabbedPane(gameSettingsPanel));
 

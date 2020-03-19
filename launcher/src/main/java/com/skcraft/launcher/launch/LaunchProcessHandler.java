@@ -43,8 +43,9 @@ public class LaunchProcessHandler implements Function<Process, ProcessConsoleFra
                 public void run() {
                     consoleFrame = new ProcessConsoleFrame(CONSOLE_NUM_LINES, true);
                     consoleFrame.setProcess(process);
-                    consoleFrame.setVisible(true);
+                    consoleFrame.setVisible(false);
                     MessageLog messageLog = consoleFrame.getMessageLog();
+					System.exit(0);
                     messageLog.consume(process.getInputStream());
                     messageLog.consume(process.getErrorStream());
                 }

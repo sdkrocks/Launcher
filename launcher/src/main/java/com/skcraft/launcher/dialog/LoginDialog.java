@@ -19,7 +19,9 @@ import com.skcraft.launcher.persistence.Persistence;
 import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SwingExecutor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NonNull;
+import lombok.ToString;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +39,7 @@ public class LoginDialog extends JDialog {
     private final Launcher launcher;
     @Getter private final AccountList accounts;
     @Getter private Session session;
+	private Configuration config;
 
     private final JComboBox idCombo = new JComboBox();
     private final JPasswordField passwordText = new JPasswordField();
@@ -101,13 +104,15 @@ public class LoginDialog extends JDialog {
         formPanel.addRow(new JLabel(), rememberIdCheck);
         formPanel.addRow(new JLabel(), rememberPassCheck);
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(26, 13, 13, 13));
-
-        if (launcher.getConfig().isOfflineEnabled()) {
-            buttonsPanel.addElement(offlineButton);
-            buttonsPanel.addElement(Box.createHorizontalStrut(2));
-        }
+		
+        //if (launcher.getConfig().isOfflineEnabled()) {
+        //    buttonsPanel.addElement(offlineButton);
+        //    buttonsPanel.addElement(Box.createHorizontalStrut(2));
+        //}
+		
         buttonsPanel.addElement(recoverButton);
         buttonsPanel.addGlue();
+		buttonsPanel.addElement(offlineButton);
         buttonsPanel.addElement(loginButton);
         buttonsPanel.addElement(cancelButton);
 
@@ -141,23 +146,14 @@ public class LoginDialog extends JDialog {
                 prepareLogin();
             }
         });
-
+		Configuration config = launcher.getConfig();
+        final String offlinePlayerUsername = config.getOfflineUsernameConfig();
         offlineButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object selected = idCombo.getSelectedItem();
-                if(selected!=null && selected instanceof Account){
-                    Account ac = (Account) selected;
-                    if(ac.getId().length()>=3&&ac.getId().length()<=16) {
-                        setResult(new OfflineSession(ac.getId()));
-                        removeListeners();
-                        dispose();
-                    }else{
-                        SwingHelper.showErrorDialog(formPanel, SharedLocale.tr("login.badLoginLength"), SharedLocale.tr("login.noLoginTitle"));
-                    }
-                }else{
-                    SwingHelper.showErrorDialog(formPanel, SharedLocale.tr("login.noLoginError"), SharedLocale.tr("login.noLoginTitle"));
-                }
+				setResult(new OfflineSession(offlinePlayerUsername));
+                    removeListeners();
+                    dispose();
             }
         });
 
@@ -341,7 +337,7 @@ public class LoginDialog extends JDialog {
             // owns the game, so we need to check that
             if (identities.size() > 0) {
                 // Set offline enabled flag to true
-                Configuration config = launcher.getConfig();
+
                 if (!config.isOfflineEnabled()) {
                     config.setOfflineEnabled(true);
                     Persistence.commitAndForget(config);
