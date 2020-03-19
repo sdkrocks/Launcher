@@ -1,0 +1,18 @@
+{
+  "name" : "cea",
+  "title" : null,
+  "gameVersion" : "1.15.2",
+  "features" : [ ],
+  "userFiles" : {
+    "include" : [
+      "options.txt",
+      "optionsshaders.txt"
+    ],
+    "exclude" : [ ]
+  },
+  "launch" : {
+    "flags" : [
+      "-Dfml.ignoreInvalidMinecraftCertificates=true"
+    ]
+  }
+}
